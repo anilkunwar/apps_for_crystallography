@@ -1,11 +1,11 @@
 import os
 os.environ["STREAMLIT_DEPRECATION_SHOW_PYPLOT_GLOBAL_USE"] = "False"
 import streamlit as st
-#st.set_option('deprecation.showPyplotGlobalUse', False)
+st.set_option('deprecation.showPyplotGlobalUse', False)
 #import streamlit as st
 import matplotlib.pyplot as plt
 import warnings
-warnings.filterwarnings("ignore", category=UserWarning, module="matplotlib")
+#warnings.filterwarnings("ignore", category=UserWarning, module="matplotlib")
 import numpy as np
 
 from orix import plot, sampling
