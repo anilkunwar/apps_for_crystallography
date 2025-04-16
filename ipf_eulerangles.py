@@ -86,10 +86,13 @@ num_points = st.slider("Number of Points:", min_value=1, max_value=100000, value
 ori = Orientation.random(num_points )
 ori.symmetry = pg
 rgb_z = plot.IPFColorKeyTSL(pg).orientation2color(ori)
-ori.scatter("ipf", c=rgb_z, direction=direction)
+#ori.scatter("ipf", c=rgb_z, direction=direction)
 #plt.title(f"ORIX Plot for {selected_symmetry} Symmetry")
-st.pyplot(plt.gcf())  # Display the generated ORIX plot
-ori.scatter("ipf", c=rgb_z, direction=direction)
+#st.pyplot(plt.gcf())  # Display the generated ORIX plot
+fig, ax = plt.subplots()
+ori.scatter("ipf", c=rgb_z, direction=direction, ax=ax)
+st.pyplot(fig)  # Display the generated ORIX plot
+#ori.scatter("ipf", c=rgb_z, direction=direction)
 
 
 
