@@ -4,6 +4,8 @@ import streamlit as st
 #st.set_option('deprecation.showPyplotGlobalUse', False)
 #import streamlit as st
 import matplotlib.pyplot as plt
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning, module="matplotlib")
 import numpy as np
 
 from orix import plot, sampling
