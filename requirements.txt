@@ -2,6 +2,6 @@ numpy
 numpy-quaternion
 streamlit
 matplotlib
-orix
+orix==0.12.1
 
 
