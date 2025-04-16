@@ -1,32 +1,27 @@
-import os
-os.environ["STREAMLIT_DEPRECATION_SHOW_PYPLOT_GLOBAL_USE"] = "False"
 import streamlit as st
+# Suppress deprecation warning for global use of Matplotlib's pyplot
 st.set_option('deprecation.showPyplotGlobalUse', False)
-#import streamlit as st
 import matplotlib.pyplot as plt
-import warnings
-#warnings.filterwarnings("ignore", category=UserWarning, module="matplotlib")
 import numpy as np
-
 from orix import plot, sampling
 from orix.crystal_map import Phase
 from orix.quaternion import Orientation, symmetry
 from orix.vector import Vector3d
 
-# We'll want our plots to look a bit larger than the default size
+# Configure Matplotlib plot settings for better visualization
 new_params = {
-    "figure.facecolor": "w",
-    "figure.figsize": (20, 7),
-    "lines.markersize": 10,
-    "font.size": 15,
-    "axes.grid": True,
+    "figure.facecolor": "w",  # Set figure background to white
+    "figure.figsize": (20, 7),  # Set figure size for larger plots
+    "lines.markersize": 10,  # Set marker size for scatter plots
+    "font.size": 15,  # Set font size for text elements
+    "axes.grid": True,  # Enable grid on axes
 }
 plt.rcParams.update(new_params)
 
-# Create a Streamlit app title
+# Set the title of the Streamlit app
 st.title("Inverse Pole Figures constructed using orix software")
 
-# Explanation dictionary based on symmetry selection
+# Dictionary containing explanations for each symmetry type
 explanations = {
     "Ci": "Cyclic symmetry (Cn) has an n-fold rotation axis.",
     "C2h": "C2h symmetry is Cn with the addition of a mirror (reflection) plane perpendicular to the axis of rotation (horizontal plane).",
@@ -41,62 +36,40 @@ explanations = {
     "Oh": "Oh symmetry includes horizontal and vertical mirror planes, an inversion center, and improper rotation operations.",
 }
 
-# Dropdown for symmetry selection
-#selected_symmetry = st.selectbox("Select a symmetry:", list(explanations.keys()))
+# Create a sidebar dropdown for selecting symmetry
 selected_symmetry = st.sidebar.selectbox("Select a symmetry:", list(explanations.keys()))
 
 # Display the explanation for the selected symmetry
 st.markdown(f"**Explanation for {selected_symmetry} symmetry:**")
 st.write(explanations[selected_symmetry])
 
+# Display the IPF color key plot for the selected symmetry
+st.pyplot(plot.IPFColorKeyTSL(getattr(symmetry, selected_symmetry)).plot())
 
-# Display the plot using st.pyplot()
-#st.pyplot(plot.IPFColorKeyTSL(getattr(symmetry, selected_symmetry)).plot())
-fig = plot.IPFColorKeyTSL(getattr(symmetry, selected_symmetry)).plot()
-st.pyplot(fig)
-
-
-# Slider widgets for Euler angles
+# Sidebar sliders for adjusting Euler angles
 st.sidebar.title("Adjust Euler Angles")
 euler_x = st.sidebar.slider("Euler X or $\phi 1$ (degrees)", min_value=0, max_value=360, value=0)
 euler_y = st.sidebar.slider("Euler or $\phi $ Y (degrees)", min_value=0, max_value=360, value=0)
 euler_z = st.sidebar.slider("Euler Z or $\phi 2$ (degrees)", min_value=0, max_value=360, value=0)
 
-# Additional content
-direction = Vector3d(((1, 0, 0), (0, 1, 0), (0, 0, 1)))  # X, Y, Z
-kwargs = dict(projection="ipf", direction=direction)
+# Define crystal directions for IPF projection
+direction = Vector3d(((1, 0, 0), (0, 1, 0), (0, 0, 1)))  # X, Y, Z directions
+kwargs = dict(projection="ipf", direction=direction)  # IPF plot parameters
 
-# Generate ORIX plot using selected symmetry and adjusted Euler angles
+# Generate and display IPF plot with selected Euler angles
 st.markdown(f"IPF for {selected_symmetry} Symmetry with selected Euler Angles")
-pg = getattr(symmetry, selected_symmetry)
-ori = Orientation.from_euler([euler_x, euler_y, euler_z], pg, degrees=True)
-#ori.scatter(**kwargs)
-#plt.title(f"ORIX Plot for {selected_symmetry} Symmetry")
-#st.pyplot(plt.gcf())  # Display the generated ORIX plot
-fig, ax = plt.subplots()
-ori.scatter(**kwargs, ax=ax)
-st.pyplot(fig)  # Display the generated ORIX plot
+pg = getattr(symmetry, selected_symmetry)  # Get symmetry object
+ori = Orientation.from_euler([euler_x, euler_y, euler_z], pg, degrees=True)  # Create orientation from Euler angles
+ori.scatter(**kwargs)  # Plot the orientation
+st.pyplot(plt.gcf())  # Display the plot
 
-
-#
-# Slider for controlling the number of points
-st.markdown(f"IPF for for {selected_symmetry} Symmetry with Random Points")
+# Slider for controlling the number of random points
+st.markdown(f"IPF for {selected_symmetry} Symmetry with Random Points")
 num_points = st.slider("Number of Points:", min_value=1, max_value=100000, value=100, step=10)
-# Generate ORIX plot using selected symmetry
-#pg = getattr(symmetry, selected_symmetry)
-#ori = Orientation.random(100000)
-ori = Orientation.random(num_points )
-ori.symmetry = pg
-rgb_z = plot.IPFColorKeyTSL(pg).orientation2color(ori)
-#ori.scatter("ipf", c=rgb_z, direction=direction)
-#plt.title(f"ORIX Plot for {selected_symmetry} Symmetry")
-#st.pyplot(plt.gcf())  # Display the generated ORIX plot
-fig, ax = plt.subplots()
-ori.scatter("ipf", c=rgb_z, direction=direction, ax=ax)
-st.pyplot(fig)  # Display the generated ORIX plot
-#ori.scatter("ipf", c=rgb_z, direction=direction)
 
-
-
-
-
+# Generate and display IPF plot with random orientations
+ori = Orientation.random(num_points)  # Generate random orientations
+ori.symmetry = pg  # Assign selected symmetry
+rgb_z = plot.IPFColorKeyTSL(pg).orientation2color(ori)  # Compute colors for orientations
+ori.scatter("ipf", c=rgb_z, direction=direction)  # Plot the random orientations
+st.pyplot(plt.gcf())  # Display the plot
