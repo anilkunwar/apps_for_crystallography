@@ -1,4 +1,6 @@
 streamlit==1.22.0
 orix==0.11.1
+numpy-quaternion==2022.4.3
+
 
 
