@@ -1,5 +1,2 @@
-streamlit==1.31.0
-orix==0.12.1
-quaternion==2022.4.4
-numpy==1.23.5
-matplotlib==3.7.1
+streamlit
+orix
