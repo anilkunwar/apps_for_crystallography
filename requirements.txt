@@ -1,4 +1,4 @@
 streamlit
 orix
-numpy
+numpy-quaternion>=2022.4.3
 
