@@ -68,9 +68,13 @@ kwargs = dict(projection="ipf", direction=direction)
 st.markdown(f"IPF for {selected_symmetry} Symmetry with selected Euler Angles")
 pg = getattr(symmetry, selected_symmetry)
 ori = Orientation.from_euler([euler_x, euler_y, euler_z], pg, degrees=True)
-ori.scatter(**kwargs)
+#ori.scatter(**kwargs)
 #plt.title(f"ORIX Plot for {selected_symmetry} Symmetry")
-st.pyplot(plt.gcf())  # Display the generated ORIX plot
+#st.pyplot(plt.gcf())  # Display the generated ORIX plot
+fig, ax = plt.subplots()
+ori.scatter(**kwargs, ax=ax)
+st.pyplot(fig)  # Display the generated ORIX plot
+
 
 #
 # Slider for controlling the number of points
