@@ -1,3 +1,5 @@
 streamlit
 orix
+numpy
+matplotlib
 
