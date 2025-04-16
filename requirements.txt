@@ -1,4 +1,7 @@
-streamlit
-orix
+numpy
 numpy-quaternion
+streamlit
+matplotlib
+orix
+
 
