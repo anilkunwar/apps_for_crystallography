@@ -1,7 +1,4 @@
-numpy
-numpy-quaternion
 streamlit
-matplotlib
-orix==0.11.1
+orix==0.8.2
 
 
