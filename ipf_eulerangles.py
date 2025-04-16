@@ -49,7 +49,10 @@ st.write(explanations[selected_symmetry])
 
 
 # Display the plot using st.pyplot()
-st.pyplot(plot.IPFColorKeyTSL(getattr(symmetry, selected_symmetry)).plot())
+#st.pyplot(plot.IPFColorKeyTSL(getattr(symmetry, selected_symmetry)).plot())
+fig = plot.IPFColorKeyTSL(getattr(symmetry, selected_symmetry)).plot()
+st.pyplot(fig)
+
 
 # Slider widgets for Euler angles
 st.sidebar.title("Adjust Euler Angles")
