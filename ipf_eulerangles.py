@@ -1,7 +1,7 @@
 import os
 os.environ["STREAMLIT_DEPRECATION_SHOW_PYPLOT_GLOBAL_USE"] = "False"
 import streamlit as st
-st.set_option('deprecation.showPyplotGlobalUse', False)
+#st.set_option('deprecation.showPyplotGlobalUse', False)
 #import streamlit as st
 import matplotlib.pyplot as plt
 import numpy as np
